@@ -1,0 +1,42 @@
+# JetBrains IDEs
+.idea/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing/coverage
+.pytest_cache/
+.coverage*
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Tooling
+.mypy_cache/
+.ruff_cache/
+.benchmarks/
+
