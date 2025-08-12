@@ -22,6 +22,9 @@ resource "databricks_secret" "secrets" {
   for_each     = { for item in local.secret_items : "${item.scope}:${item.key}" => item }
   scope        = databricks_secret_scope.scopes[each.value.scope].name
   key          = each.value.key
-  string_value = each.value.value
+  # Store JSON for easier parsing downstream (e.g., Python)
+  string_value = jsonencode({
+    key   = each.value.key,
+    value = each.value.value
+  })
 }
-
