@@ -10,3 +10,9 @@ variable "databricks_profile" {
 variable "schemas" {
   type    = set(string)
 }
+
+variable "kaggle" {
+  type        = map(string)
+  description = "Kaggle OAuth credentials and configuration"
+  default     = {}
+}
