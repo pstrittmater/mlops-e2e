@@ -12,10 +12,13 @@ locals {
       }
     }
   ]...)
+
+  # Derive a stable map of unique scopes from the items
+  scopes_map = { for s in toset([for i in values(local.secret_items) : i.scope]) : s => true }
 }
 
 resource "databricks_secret_scope" "scopes" {
-  for_each                 = local.api_credentials
+  for_each                 = local.scopes_map
   name                     = "mlops_${var.environment}_${each.key}"
   initial_manage_principal = "users"
 }
