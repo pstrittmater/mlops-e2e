@@ -1,15 +1,17 @@
 locals {
   api_credentials = var.secrets.api_credentials
 
-  secret_items = flatten([
-    for scope, kvs in local.api_credentials : [
-      for key, value in kvs : {
+  # Pre-compute a map of secret items keyed by a unique composite key
+  # to avoid rebuilding the map in the resource's for_each.
+  secret_items = merge([
+    for scope, kvs in local.api_credentials : {
+      for key, value in kvs : "${scope}_${key}" => {
         scope = scope
         key   = key
         value = value
       }
-    ]
-  ])
+    }
+  ]...)
 }
 
 resource "databricks_secret_scope" "scopes" {
@@ -19,7 +21,7 @@ resource "databricks_secret_scope" "scopes" {
 }
 
 resource "databricks_secret" "secrets" {
-  for_each     = { for item in local.secret_items : "${item.scope}:${item.key}" => item }
+  for_each     = local.secret_items
   scope        = databricks_secret_scope.scopes[each.value.scope].name
   key          = each.value.key
   # Store JSON for easier parsing downstream (e.g., Python)
