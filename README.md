@@ -3,7 +3,7 @@ MLOps E2E
 Quick Start
 - Install `uv`: macOS/Linux `curl -LsSf https://astral.sh/uv/install.sh | sh`
 - Create venv: `uv venv --python 3.12`
-- Install deps: `uv sync --extra dev`
+- Install deps (enforce lockfile): `uv sync --frozen --extra dev`
 - Install hooks: `uv run pre-commit install`
 
 Common Commands
