@@ -10,9 +10,3 @@ variable "databricks_profile" {
 variable "schemas" {
   type    = set(string)
 }
-
-variable "api_credentials" {
-  type = map(map(string))
-  description = "Service API credentials (e.g., kaggle)"
-  default = {}
-}

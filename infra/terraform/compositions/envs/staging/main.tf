@@ -1,8 +1,6 @@
 module "databricks" {
-  source      = "../../../modules/databricks"
-  environment = var.environment
-  schemas     = var.schemas
-  secrets     = {
-    api_credentials = var.api_credentials
-  }
+  source            = "../../../modules/databricks"
+  catalog_base_name = "mlops"
+  environment       = var.environment
+  schemas           = var.schemas
 }

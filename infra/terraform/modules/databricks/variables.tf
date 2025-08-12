@@ -1,5 +1,10 @@
-variable "environment" {
+variable "catalog_base_name" {
   type = string
+}
+
+variable "environment" {
+  type    = string
+  default = ""
 }
 
 variable "schemas" {
@@ -7,11 +12,7 @@ variable "schemas" {
 }
 
 variable "secrets" {
-  description = "Secrets configuration"
-  type = object({
-    api_credentials = map(map(string))
-  })
-  default = {
-    api_credentials = {}
-  }
+  description = "Map of secret scopes to their key-value maps"
+  type        = map(map(any))
+  default     = {}
 }
