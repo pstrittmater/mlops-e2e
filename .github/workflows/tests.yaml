@@ -44,8 +44,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --extra dev
 
       - name: Run tests
         run: uv run pytest -q --maxfail=1 --cov --cov-report=term-missing
-
