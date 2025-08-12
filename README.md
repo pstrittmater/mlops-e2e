@@ -2,7 +2,7 @@ MLOps E2E
 
 Quick Start
 - Install `uv`: macOS/Linux `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- Create venv: `uv venv --python 3.12`
+- Create venv (Python 3.12.3): `uv venv --python 3.12.3`
 - Install deps (enforce lockfile): `uv sync --frozen --extra dev`
 - Install hooks: `uv run pre-commit install`
 
@@ -13,13 +13,21 @@ Common Commands
 - Type check: `uv run mypy`
 
 Requirements
-- Python 3.12
-- Java 11 or 17 (for PySpark 3.5)
-- Optional: set `JAVA_HOME` for consistent Spark behavior
+- Python 3.12.3
+- Databricks Connect 16.4.2 (provided via project dependencies)
+- No local Java required for Connect-based development
 
 Spark + Delta Notes
-- This project depends on `pyspark>=3.5,<3.6` and `delta-spark==3.3.0`.
-- The first Delta-enabled Spark session may download JARs from Maven.
+- This project uses Databricks Connect `16.4.2` for local development against a Databricks workspace.
+- Create the Spark session via Connect and pass it when needed:
+  ```python
+  from databricks.connect import DatabricksSession
+  from pyspark.dbutils import DBUtils
+
+  spark = DatabricksSession.builder.getOrCreate()
+  dbutils = DBUtils(spark)
+  ```
+- For true local Spark (no Connect), install the `local` extra: `uv sync --extra local`.
 
 CI
 - GitHub Actions runs pre-commit (lint/format/type) and pytest on pushes/PRs to `main`.
@@ -45,10 +53,13 @@ Kaggle Example
     ```python
     from pathlib import Path
     from mlops_e2e.ingestion.external import KaggleDatasetIngestion
+    from databricks.connect import DatabricksSession
 
+    spark = DatabricksSession.builder.getOrCreate()
     ingestor = KaggleDatasetIngestion(
         dataset="datasets/chicago/chicago-taxi-trips-bq/",
         dest_dir=Path("data/external/kaggle/chicago_taxi_trips_bq"),
+        spark=spark,
     )
     table = ingestor.ingest_to_delta(dataset="chicago_taxi_trips_bq")
     # Writes Delta table: external.kaggle.chicago_taxi_trips_bq
