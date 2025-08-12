@@ -24,3 +24,6 @@ Spark + Delta Notes
 CI
 - GitHub Actions runs pre-commit (lint/format/type) and pytest on pushes/PRs to `main`.
 - Pre-commit environments are cached for faster runs.
+ - Lockfile: `uv.lock` is committed. CI enforces it with `uv sync --frozen --extra dev`.
+   - For local reproducible installs, you can also use `uv sync --frozen`.
+   - When changing dependencies, use `uv add ...` (or `uv sync`) to update `uv.lock`.
