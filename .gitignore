@@ -54,4 +54,5 @@ crash.*.log
 !.terraform.lock.hcl
 
 # Terraform compositions env secrets (auto-loaded tfvars JSON)
-compositions/envs/**/*.auto.tfvars.json
+# Only ignore the canonical secrets file name
+compositions/envs/**/secrets.auto.tfvars.json
