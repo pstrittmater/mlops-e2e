@@ -5,8 +5,15 @@ description = "MLOps E2E project"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-  "pyspark>=3.5,<3.6",
-  "delta-spark==3.3.0",
+  # Target the latest 17.0.x compatible release
+  "databricks-connect~=17.0.0",
+  # Specific to Databricks Runtime
+  "boto3==1.36.2",
+  # Other dependencies
+  "kaggle>=1.7",
+  "openaq>=0.4.0",
+  "PyYAML>=6.0.2",
+  "shapely>=2.1.1",
 ]
 
 [project.optional-dependencies]
@@ -17,6 +24,11 @@ dev = [
   "black>=24.4",
   "mypy>=1.10",
   "pre-commit>=3.7",
+]
+local = [
+  # For true local Spark runs (not Databricks Connect)
+  "pyspark~=4.0.0",
+  "delta-spark==4.0.0",
 ]
 
 [build-system]
